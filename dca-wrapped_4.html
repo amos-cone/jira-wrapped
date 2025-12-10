@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DCA Wrapped Q4 2025</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    
+    .app { height: 100vh; width: 100vw; overflow: hidden; transition: background 0.5s ease; }
+    
+    .gradient-intro { background: linear-gradient(135deg, #9333ea, #db2777, #f97316); }
+    .gradient-dca { background: linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed); }
+    .gradient-di { background: linear-gradient(135deg, #10b981, #059669, #0d9488); }
+    .gradient-dt { background: linear-gradient(135deg, #f97316, #f59e0b, #eab308); }
+    .gradient-select { background: linear-gradient(135deg, #06b6d4, #2563eb, #4338ca); }
+    .gradient-transition { background: linear-gradient(135deg, #06b6d4, #2563eb, #4338ca); }
+    .gradient-total { background: linear-gradient(135deg, #7c3aed, #9333ea, #c026d3); }
+    .gradient-breakdown { background: linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed); }
+    .gradient-projects { background: linear-gradient(135deg, #334155, #1f2937, #18181b); }
+    .gradient-epics { background: linear-gradient(135deg, #10b981, #059669, #0d9488); }
+    .gradient-shipping { background: linear-gradient(135deg, #f97316, #f59e0b, #eab308); }
+    .gradient-persona { background: linear-gradient(135deg, #c026d3, #9333ea, #7c3aed); }
+    .gradient-finale { background: linear-gradient(135deg, #facc15, #f97316, #dc2626); }
+    
+    .slide { 
+      height: 100%; 
+      width: 100%; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center; 
+      text-align: center; 
+      padding: 2rem; 
+      color: white;
+    }
+    
+    .select-screen {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 1.5rem;
+      color: white;
+      overflow-y: auto;
+    }
+    
+    .emoji { font-size: 3.5rem; margin-bottom: 1rem; }
+    .emoji-lg { font-size: 4rem; margin-bottom: 1rem; }
+    .title { font-size: 1.875rem; font-weight: 900; margin-bottom: 0.5rem; }
+    .subtitle { font-size: 1.25rem; opacity: 0.9; }
+    .subtitle-sm { font-size: 1rem; opacity: 0.75; margin-top: 0.5rem; }
+    .label { font-size: 0.875rem; opacity: 0.7; margin-bottom: 0.25rem; }
+    .big-number { font-size: 5rem; font-weight: 900; margin: 0.5rem 0; }
+    .big-number-sm { font-size: 4rem; font-weight: 900; margin: 0.5rem 0; }
+    .metric-label { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; }
+    
+    .stat-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .stat-box {
+      background: rgba(255,255,255,0.15);
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      text-align: center;
+      min-width: 70px;
+    }
+    
+    .stat-box .value { font-size: 1.25rem; font-weight: 900; }
+    .stat-box .label { font-size: 0.65rem; opacity: 0.7; margin: 0; }
+    
+    .card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      width: 100%;
+      max-width: 280px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-highlight {
+      background: rgba(255,255,255,0.15);
+    }
+    
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .card-title { font-weight: 500; font-size: 0.9rem; text-align: left; }
+    .card-value { font-weight: 900; font-size: 1.25rem; }
+    .card-sub { font-size: 0.7rem; opacity: 0.5; text-align: left; margin-top: 0.25rem; }
+    
+    .progress-bar {
+      height: 0.5rem;
+      background: rgba(255,255,255,0.2);
+      border-radius: 0.25rem;
+      margin-top: 0.5rem;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: white;
+      border-radius: 0.25rem;
+    }
+    
+    .chart-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-end;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    
+    .chart-bar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .chart-bar {
+      width: 3rem;
+      background: rgba(255,255,255,0.4);
+      border-radius: 0.25rem 0.25rem 0 0;
+    }
+    
+    .chart-bar.active {
+      background: white;
+    }
+    
+    .chart-label {
+      font-size: 0.7rem;
+      margin-top: 0.25rem;
+      opacity: 0.7;
+    }
+    
+    .chart-label.active {
+      font-weight: 700;
+      opacity: 1;
+    }
+    
+    .rhythm-card {
+      background: rgba(255,255,255,0.15);
+      border-radius: 1rem;
+      padding: 1rem 1.5rem;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+    
+    .rhythm-label { font-size: 0.7rem; opacity: 0.7; margin-bottom: 0.25rem; }
+    .rhythm-value { font-size: 1.75rem; font-weight: 900; }
+    .rhythm-sub { font-size: 0.8rem; opacity: 0.7; }
+    
+    .person-btn {
+      width: 100%;
+      max-width: 280px;
+      padding: 0.875rem 1rem;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 0.75rem;
+      color: white;
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: background 0.2s;
+    }
+    
+    .person-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    
+    .person-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      opacity: 0.6;
+    }
+    
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    
+    .nav-btn:hover { background: rgba(255,255,255,0.3); }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .nav-btn.prev { left: 1rem; }
+    .nav-btn.next { right: 1rem; }
+    
+    .back-btn {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.375rem 0.75rem;
+      background: rgba(0,0,0,0.2);
+      border: none;
+      border-radius: 9999px;
+      color: white;
+      font-size: 0.875rem;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+    
+    .back-btn:hover { opacity: 1; background: rgba(0,0,0,0.3); }
+    
+    .dots {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.375rem;
+    }
+    
+    .dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.4);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .dot.active {
+      width: 1.5rem;
+      background: white;
+    }
+    
+    .slide-counter {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 0.75rem;
+      opacity: 0.5;
+    }
+    
+    .bounce {
+      animation: bounce 1s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .summary-line {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      margin: 0.25rem 0;
+    }
+    
+    .summary-divider {
+      padding: 0.5rem 0;
+      opacity: 0.5;
+    }
+    
+    .finale-cta {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-top: 1.5rem;
+    }
+    
+    .finale-footer {
+      font-size: 0.75rem;
+      opacity: 0.5;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="app gradient-intro"></div>
+  
+  <script>
+    const teamData = {
+      'Summer Box': {
+        totalPoints: 85, totalTickets: 37,
+        featurePoints: 56, featureTickets: 22,
+        bugPoints: 24, bugTickets: 14,
+        techDebtPoints: 5, techDebtTickets: 1,
+        bestDay: 'Monday', bestDayPoints: 30,
+        bestMonth: 'November', bestMonthPoints: 47,
+        monthBreakdown: { October: 31, November: 47, December: 7 },
+        projects: [{ name: 'DCA', points: 85, tickets: 37 }],
+        topEpics: [{ name: 'Michigan State Reporting', points: 13 }, { name: 'CMS Audit Universe: On-Call', points: 6 }, { name: 'Data Pipeline Triage 2025Q4', points: 5 }],
+        persona: { emoji: '🏁', title: 'The Powerhouse', description: "85 points, 37 tickets — you led the team in delivery this quarter. When there's work to be done, you get it done." }
+      },
+      'Amr Abouelleil': {
+        totalPoints: 72, totalTickets: 32,
+        featurePoints: 41, featureTickets: 18,
+        bugPoints: 11, bugTickets: 8,
+        techDebtPoints: 20, techDebtTickets: 6,
+        bestDay: 'Tuesday', bestDayPoints: 29,
+        bestMonth: 'October', bestMonthPoints: 44,
+        monthBreakdown: { October: 44, November: 22, December: 6 },
+        projects: [{ name: 'DCA', points: 72, tickets: 32 }],
+        topEpics: [{ name: 'DataHub Tech Debt', points: 22 }, { name: 'Data Pipeline Stabilization', points: 13 }, { name: 'Michigan State Reporting', points: 11 }],
+        persona: { emoji: '🏗️', title: 'The Foundation Builder', description: "22 points on Tech Debt alone. You're the one making sure the house stands strong before we add more floors." }
+      },
+      'Theodore Dyer': {
+        totalPoints: 63, totalTickets: 31,
+        featurePoints: 52, featureTickets: 22,
+        bugPoints: 11, bugTickets: 9,
+        techDebtPoints: 0, techDebtTickets: 0,
+        bestDay: 'Wednesday', bestDayPoints: 28,
+        bestMonth: 'October', bestMonthPoints: 30,
+        monthBreakdown: { October: 30, November: 14, December: 19 },
+        projects: [{ name: 'DCA', points: 63, tickets: 31 }],
+        topEpics: [{ name: 'CMS Audit Universe: List of Participant Medical Records', points: 15 }, { name: 'Michigan State Reporting', points: 8 }, { name: 'CMS Audit Universe: SDR', points: 7 }],
+        persona: { emoji: '🐋', title: 'The Deep Diver', description: "LPMR, SDR, Michigan — you tackle the complex compliance challenges." }
+      },
+      'Alexander Zheng': {
+        totalPoints: 60, totalTickets: 49,
+        featurePoints: 47, featureTickets: 36,
+        bugPoints: 12, bugTickets: 12,
+        techDebtPoints: 1, techDebtTickets: 1,
+        bestDay: 'Tuesday', bestDayPoints: 19,
+        bestMonth: 'October', bestMonthPoints: 35,
+        monthBreakdown: { October: 35, November: 17, December: 8 },
+        projects: [{ name: 'DI', points: 53, tickets: 42 }, { name: 'DCA', points: 6, tickets: 6 }, { name: 'DT', points: 1, tickets: 1 }],
+        topEpics: [{ name: 'IRIS Suspecting', points: 15 }, { name: 'Data Pipeline Triage 2025Q4', points: 6 }, { name: 'LIFE PACE IRIS Integration', points: 6 }],
+        persona: { emoji: '👁️', title: 'The IRIS Visionary', description: "49 tickets shipped. You're building the future of population health, one feature at a time." }
+      },
+      'Evan Walters': {
+        totalPoints: 45, totalTickets: 35,
+        featurePoints: 38, featureTickets: 28,
+        bugPoints: 6, bugTickets: 6,
+        techDebtPoints: 1, techDebtTickets: 1,
+        bestDay: 'Monday', bestDayPoints: 11,
+        bestMonth: 'October', bestMonthPoints: 19,
+        monthBreakdown: { October: 19, November: 15, December: 11 },
+        projects: [{ name: 'DI', points: 23, tickets: 17 }, { name: 'DT', points: 17, tickets: 13 }, { name: 'DCA', points: 5, tickets: 5 }],
+        topEpics: [{ name: 'IRIS Suspecting', points: 15 }, { name: 'General Tickets for Pop Health', points: 4 }, { name: 'Client Support', points: 4 }],
+        persona: { emoji: '🌉', title: 'The Bridge Builder', description: "IRIS, Data Tools, CareHub — you connect the dots across all three projects." }
+      },
+      'Oleh Tkachenko': {
+        totalPoints: 42, totalTickets: 29,
+        featurePoints: 31, featureTickets: 21,
+        bugPoints: 10, bugTickets: 7,
+        techDebtPoints: 1, techDebtTickets: 1,
+        bestDay: 'Monday', bestDayPoints: 18,
+        bestMonth: 'November', bestMonthPoints: 17,
+        monthBreakdown: { October: 17, November: 17, December: 8 },
+        projects: [{ name: 'DCA', points: 42, tickets: 29 }],
+        topEpics: [{ name: 'CareHub: HPMS Medication Related Occurrence', points: 5 }, { name: 'CareHub: Innermark Integration', points: 4 }, { name: 'CareHub: Assessment Reporting', points: 4 }],
+        persona: { emoji: '🛠️', title: 'The Swiss Army Knife', description: "HPMS, Innermark, Assessments — you touched it all. Versatility is your superpower." }
+      },
+      'Jashwanth Kumar Sajja': {
+        totalPoints: 36, totalTickets: 21,
+        featurePoints: 29, featureTickets: 14,
+        bugPoints: 7, bugTickets: 7,
+        techDebtPoints: 0, techDebtTickets: 0,
+        bestDay: 'Tuesday', bestDayPoints: 11,
+        bestMonth: 'October', bestMonthPoints: 15,
+        monthBreakdown: { October: 15, November: 11, December: 10 },
+        projects: [{ name: 'DI', points: 28, tickets: 15 }, { name: 'DT', points: 4, tickets: 2 }, { name: 'DCA', points: 4, tickets: 4 }],
+        topEpics: [{ name: 'Transition IRIS v1 to v2', points: 13 }, { name: 'IRIS 2.0 no PHI Demo Environment', points: 6 }, { name: 'Data Pipeline Triage 2025Q4', points: 6 }],
+        persona: { emoji: '🔄', title: 'The Transition Master', description: "13 points on IRIS v1 to v2. You're the one making sure we evolve without breaking what works." }
+      },
+      'James Greer': {
+        totalPoints: 29, totalTickets: 10,
+        featurePoints: 29, featureTickets: 10,
+        bugPoints: 0, bugTickets: 0,
+        techDebtPoints: 0, techDebtTickets: 0,
+        bestDay: 'Tuesday', bestDayPoints: 10,
+        bestMonth: 'October', bestMonthPoints: 23,
+        monthBreakdown: { October: 23, November: 6, December: 0 },
+        projects: [{ name: 'DCA', points: 29, tickets: 10 }],
+        topEpics: [{ name: 'CMS Audit Universe: Appeals', points: 5 }, { name: 'CMS Audit Universe: SDR', points: 5 }, { name: 'CMS Audit Universe: On-Call', points: 3 }],
+        persona: { emoji: '🔍', title: 'The Audit Master', description: "Appeals, SDR, On-Call — you owned the CMS Audit Universe. When compliance calls, you answer." }
+      },
+      'Jahir Reyes': {
+        totalPoints: 20, totalTickets: 17,
+        featurePoints: 16, featureTickets: 13,
+        bugPoints: 4, bugTickets: 4,
+        techDebtPoints: 0, techDebtTickets: 0,
+        bestDay: 'Tuesday', bestDayPoints: 7,
+        bestMonth: 'October', bestMonthPoints: 12,
+        monthBreakdown: { October: 12, November: 7, December: 1 },
+        projects: [{ name: 'DI', points: 17, tickets: 14 }, { name: 'DCA', points: 2, tickets: 2 }, { name: 'DT', points: 1, tickets: 1 }],
+        topEpics: [{ name: 'Transition IRIS v1 to v2', points: 6 }, { name: 'IRIS Suspecting', points: 5 }, { name: 'Data Pipeline Triage 2025Q4', points: 3 }],
+        persona: { emoji: '🚀', title: 'The Launch Specialist', description: "IRIS transitions, suspecting, pipeline triage — you're there when it's time to flip the switch." }
+      },
+      'James Romero': {
+        totalPoints: 11, totalTickets: 11,
+        featurePoints: 10, featureTickets: 10,
+        bugPoints: 1, bugTickets: 1,
+        techDebtPoints: 0, techDebtTickets: 0,
+        bestDay: 'Tuesday', bestDayPoints: 6,
+        bestMonth: 'December', bestMonthPoints: 5,
+        monthBreakdown: { October: 3, November: 3, December: 5 },
+        projects: [{ name: 'DI', points: 11, tickets: 11 }],
+        topEpics: [{ name: 'IRIS Suspecting', points: 1 }, { name: 'Great Lakes transition to CareHub', points: 1 }, { name: 'PACE @ Home transition to CareHub', points: 1 }],
+        persona: { emoji: '⚡', title: 'The Steady Hand', description: "Consistent delivery across all three months. You keep the IRIS engine running smoothly." }
+      },
+      'Amos Cone': {
+        totalPoints: 11, totalTickets: 31,
+        featurePoints: 7, featureTickets: 27,
+        bugPoints: 4, bugTickets: 4,
+        techDebtPoints: 0, techDebtTickets: 0,
+        bestDay: 'Thursday', bestDayPoints: 4,
+        bestMonth: 'October', bestMonthPoints: 7,
+        monthBreakdown: { October: 7, November: 3, December: 1 },
+        projects: [{ name: 'DCA', points: 11, tickets: 31 }],
+        topEpics: [{ name: 'BoldAge Crestwood | CareHub Implementation', points: 2 }, { name: 'DHCS Enrollment Reporting', points: 1 }, { name: 'DataHub: Product Requirements', points: 1 }],
+        persona: { emoji: '🎯', title: 'The Orchestrator', description: "31 tickets shepherded to completion. You keep the wheels turning on implementations and requirements." }
+      },
+      'Shrey Savsani': {
+        totalPoints: 7, totalTickets: 4,
+        featurePoints: 5, featureTickets: 3,
+        bugPoints: 0, bugTickets: 0,
+        techDebtPoints: 2, techDebtTickets: 1,
+        bestDay: 'Tuesday', bestDayPoints: 2,
+        bestMonth: 'December', bestMonthPoints: 7,
+        monthBreakdown: { October: 0, November: 0, December: 7 },
+        projects: [{ name: 'DCA', points: 7, tickets: 4 }],
+        topEpics: [{ name: 'CareHub: Innermark Integration', points: 2 }, { name: 'CalOptima | CareHub Implementation', points: 2 }, { name: 'DataHub Tech Debt', points: 2 }],
+        persona: { emoji: '🎄', title: 'The December Surge', description: "All 7 points in December. You came in clutch when the year needed closing out." }
+      },
+      'Sanjana Settipalli': {
+        totalPoints: 3, totalTickets: 2,
+        featurePoints: 3, featureTickets: 2,
+        bugPoints: 0, bugTickets: 0,
+        techDebtPoints: 0, techDebtTickets: 0,
+        bestDay: 'Monday', bestDayPoints: 3,
+        bestMonth: 'December', bestMonthPoints: 3,
+        monthBreakdown: { October: 0, November: 0, December: 3 },
+        projects: [{ name: 'DCA', points: 3, tickets: 2 }],
+        topEpics: [{ name: 'CareHub: HPMS Grievances', points: 2 }],
+        persona: { emoji: '🎯', title: 'The Focused Specialist', description: "HPMS Grievances needed attention, and you delivered. Quality over quantity, always." }
+      }
+    };
+
+    const projectTotals = {
+      DCA: { points: 329, tickets: 193, features: 228, bugs: 72, techDebt: 29, name: 'Data & CareHub Analytics', emoji: '📊' },
+      DI: { points: 132, tickets: 99, features: 119, bugs: 13, techDebt: 0, name: 'Data Integrations (IRIS)', emoji: '👁️' },
+      DT: { points: 23, tickets: 17, features: 17, bugs: 5, techDebt: 1, name: 'Data Tools', emoji: '🔧' }
+    };
+
+    const teamTotals = { totalPoints: 484, totalTickets: 309 };
+    const teamMembers = Object.keys(teamData);
+
+    // Team slides that show before name selection
+    const teamSlides = [
+      { id: 'intro', gradient: 'gradient-intro' },
+      { id: 'team-dca', gradient: 'gradient-dca' },
+      { id: 'team-di', gradient: 'gradient-di' },
+      { id: 'team-dt', gradient: 'gradient-dt' },
+      { id: 'select', gradient: 'gradient-select' }
+    ];
+
+    let selectedPerson = null;
+    let currentSlide = 0;
+    let phase = 'team'; // 'team' or 'personal'
+
+    function getPersonalSlides() {
+      return [
+        { id: 'personal-transition', gradient: 'gradient-transition' },
+        { id: 'personal-total', gradient: 'gradient-total' },
+        { id: 'personal-breakdown', gradient: 'gradient-breakdown' },
+        { id: 'personal-projects', gradient: 'gradient-projects' },
+        { id: 'personal-epics', gradient: 'gradient-epics' },
+        { id: 'personal-shipping', gradient: 'gradient-shipping' },
+        { id: 'personal-persona', gradient: 'gradient-persona' },
+        { id: 'finale', gradient: 'gradient-finale' }
+      ];
+    }
+
+    function getCurrentSlides() {
+      if (phase === 'team') {
+        return teamSlides;
+      } else {
+        return getPersonalSlides();
+      }
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      const slides = getCurrentSlides();
+      const slide = slides[currentSlide];
+      
+      app.className = `app ${slide.gradient}`;
+      
+      let content = '';
+      const isSelectSlide = slide.id === 'select';
+      const showBackBtn = phase === 'personal';
+      const showNav = !isSelectSlide;
+      const showDots = !isSelectSlide;
+      
+      switch(slide.id) {
+        case 'intro':
+          content = `
+            <div class="slide">
+              <div class="emoji-lg">🎉</div>
+              <div class="title">DATA TEAM WRAPPED</div>
+              <div class="subtitle">Q4 2025 Edition</div>
+              <div class="subtitle-sm">Let's see what we accomplished together.</div>
+              <div class="bounce" style="margin-top: 2rem; font-size: 1.5rem;">›</div>
+            </div>
+          `;
+          break;
+          
+        case 'team-dca':
+          const dcaTotal = projectTotals.DCA.points;
+          const dcaFeaturePct = Math.round((projectTotals.DCA.features / dcaTotal) * 100);
+          const dcaBugPct = Math.round((projectTotals.DCA.bugs / dcaTotal) * 100);
+          const dcaTechDebtPct = Math.round((projectTotals.DCA.techDebt / dcaTotal) * 100);
+          content = `
+            <div class="slide">
+              <div class="emoji">${projectTotals.DCA.emoji}</div>
+              <div class="label">Project</div>
+              <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">${projectTotals.DCA.name}</div>
+              <div class="big-number-sm">${projectTotals.DCA.points}</div>
+              <div class="metric-label">Story Points</div>
+              <div class="stat-row">
+                <div class="stat-box"><div class="value">${dcaFeaturePct}%</div><div class="label">Features</div></div>
+                <div class="stat-box"><div class="value">${dcaBugPct}%</div><div class="label">Bugs</div></div>
+                <div class="stat-box"><div class="value">${dcaTechDebtPct}%</div><div class="label">Tech Debt</div></div>
+              </div>
+              <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 1rem;">${projectTotals.DCA.tickets} tickets total</div>
+            </div>
+          `;
+          break;
+          
+        case 'team-di':
+          const diTotal = projectTotals.DI.points;
+          const diFeaturePct = Math.round((projectTotals.DI.features / diTotal) * 100);
+          const diBugPct = Math.round((projectTotals.DI.bugs / diTotal) * 100);
+          const diTechDebtPct = Math.round((projectTotals.DI.techDebt / diTotal) * 100);
+          content = `
+            <div class="slide">
+              <div class="emoji">${projectTotals.DI.emoji}</div>
+              <div class="label">Project</div>
+              <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">${projectTotals.DI.name}</div>
+              <div class="big-number-sm">${projectTotals.DI.points}</div>
+              <div class="metric-label">Story Points</div>
+              <div class="stat-row">
+                <div class="stat-box"><div class="value">${diFeaturePct}%</div><div class="label">Features</div></div>
+                <div class="stat-box"><div class="value">${diBugPct}%</div><div class="label">Bugs</div></div>
+                <div class="stat-box"><div class="value">${diTechDebtPct}%</div><div class="label">Tech Debt</div></div>
+              </div>
+              <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 1rem;">${projectTotals.DI.tickets} tickets total</div>
+            </div>
+          `;
+          break;
+          
+        case 'team-dt':
+          const dtTotal = projectTotals.DT.points;
+          const dtFeaturePct = Math.round((projectTotals.DT.features / dtTotal) * 100);
+          const dtBugPct = Math.round((projectTotals.DT.bugs / dtTotal) * 100);
+          const dtTechDebtPct = Math.round((projectTotals.DT.techDebt / dtTotal) * 100);
+          content = `
+            <div class="slide">
+              <div class="emoji">${projectTotals.DT.emoji}</div>
+              <div class="label">Project</div>
+              <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">${projectTotals.DT.name}</div>
+              <div class="big-number-sm">${projectTotals.DT.points}</div>
+              <div class="metric-label">Story Points</div>
+              <div class="stat-row">
+                <div class="stat-box"><div class="value">${dtFeaturePct}%</div><div class="label">Features</div></div>
+                <div class="stat-box"><div class="value">${dtBugPct}%</div><div class="label">Bugs</div></div>
+                <div class="stat-box"><div class="value">${dtTechDebtPct}%</div><div class="label">Tech Debt</div></div>
+              </div>
+              <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 1rem;">${projectTotals.DT.tickets} tickets total</div>
+            </div>
+          `;
+          break;
+          
+        case 'select':
+          content = `
+            <div class="select-screen">
+              <div class="emoji">👋</div>
+              <div class="title">Your Turn!</div>
+              <p style="font-size: 0.875rem; opacity: 0.8; margin: 0.5rem 0 1.5rem;">Select your name to see your personal stats</p>
+              ${teamMembers.map(name => `
+                <button class="person-btn" onclick="selectPerson('${name}')">
+                  <svg class="person-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  ${name}
+                </button>
+              `).join('')}
+            </div>
+          `;
+          break;
+
+        case 'personal-transition':
+          const firstName = selectedPerson.split(' ')[0];
+          content = `
+            <div class="slide">
+              <div class="emoji-lg">✨</div>
+              <div class="subtitle">Let's see what you did,</div>
+              <div style="font-size: 2.5rem; font-weight: 900; margin-top: 0.5rem;">${firstName}</div>
+            </div>
+          `;
+          break;
+          
+        case 'personal-total':
+          const data1 = teamData[selectedPerson];
+          content = `
+            <div class="slide">
+              <div class="emoji">💪</div>
+              <div class="subtitle">You delivered</div>
+              <div class="big-number">${data1.totalPoints}</div>
+              <div class="metric-label">Story Points</div>
+              <div class="subtitle-sm">Across ${data1.totalTickets} tickets 🚀</div>
+            </div>
+          `;
+          break;
+          
+        case 'personal-breakdown':
+          const data2 = teamData[selectedPerson];
+          content = `
+            <div class="slide">
+              <div class="emoji">🎯</div>
+              <div class="subtitle" style="margin-bottom: 1.5rem;">Here's what you shipped:</div>
+              ${data2.featurePoints > 0 ? `
+                <div class="card">
+                  <div class="card-row">
+                    <span class="card-title">Features</span>
+                    <span class="card-value">${data2.featurePoints} pts</span>
+                  </div>
+                  <div class="card-sub">${data2.featureTickets} tickets</div>
+                </div>
+              ` : ''}
+              ${data2.bugPoints > 0 ? `
+                <div class="card">
+                  <div class="card-row">
+                    <span class="card-title">Bug Fixes</span>
+                    <span class="card-value">${data2.bugPoints} pts</span>
+                  </div>
+                  <div class="card-sub">${data2.bugTickets} bugs squashed 🐛</div>
+                </div>
+              ` : ''}
+              ${data2.techDebtPoints > 0 ? `
+                <div class="card">
+                  <div class="card-row">
+                    <span class="card-title">Tech Debt</span>
+                    <span class="card-value">${data2.techDebtPoints} pts</span>
+                  </div>
+                  <div class="card-sub">${data2.techDebtTickets} tickets 🔧</div>
+                </div>
+              ` : ''}
+            </div>
+          `;
+          break;
+          
+        case 'personal-projects':
+          const data3 = teamData[selectedPerson];
+          const maxPts = Math.max(...data3.projects.map(p => p.points));
+          content = `
+            <div class="slide">
+              <div class="emoji">📁</div>
+              <div class="subtitle" style="margin-bottom: 1rem;">Your Project Breakdown</div>
+              ${data3.projects.map((proj, i) => `
+                <div class="card">
+                  <div class="card-row" style="margin-bottom: 0.5rem;">
+                    <span class="card-title">${proj.name}</span>
+                    <span class="card-value">${proj.points} pts</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${(proj.points / maxPts) * 100}%"></div>
+                  </div>
+                  <div class="card-sub">${proj.tickets} tickets</div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+          break;
+          
+        case 'personal-epics':
+          const data4 = teamData[selectedPerson];
+          content = `
+            <div class="slide">
+              <div class="emoji">🔥</div>
+              <div class="subtitle" style="margin-bottom: 1rem;">Your Top Initiatives</div>
+              ${data4.topEpics.length > 0 ? data4.topEpics.map((epic, i) => `
+                <div class="card ${i === 0 ? 'card-highlight' : ''}">
+                  <div class="card-row">
+                    <span class="card-title">${epic.name}</span>
+                    <span class="card-value">${epic.points} pts</span>
+                  </div>
+                </div>
+              `).join('') : '<p style="opacity: 0.7;">No epic data available</p>'}
+            </div>
+          `;
+          break;
+          
+        case 'personal-shipping':
+          const data5 = teamData[selectedPerson];
+          const maxMonth = Math.max(...Object.values(data5.monthBreakdown));
+          content = `
+            <div class="slide">
+              <div class="emoji">📅</div>
+              <div class="subtitle" style="margin-bottom: 0.75rem;">Your Shipping Rhythm</div>
+              <div class="rhythm-card">
+                <div class="rhythm-label">Peak Day</div>
+                <div class="rhythm-value">${data5.bestDay}</div>
+                <div class="rhythm-sub">${data5.bestDayPoints} pts shipped</div>
+              </div>
+              <div class="rhythm-card">
+                <div class="rhythm-label">Peak Month</div>
+                <div class="rhythm-value">${data5.bestMonth}</div>
+                <div class="rhythm-sub">${data5.bestMonthPoints} pts shipped</div>
+              </div>
+              <div class="chart-row">
+                ${['October', 'November', 'December'].map(month => {
+                  const pts = data5.monthBreakdown[month] || 0;
+                  const height = maxMonth > 0 ? (pts / maxMonth) * 50 + 10 : 10;
+                  const isActive = month === data5.bestMonth;
+                  return `
+                    <div class="chart-bar-container">
+                      <div class="chart-bar ${isActive ? 'active' : ''}" style="height: ${height}px;"></div>
+                      <div class="chart-label ${isActive ? 'active' : ''}">${month.slice(0, 3)}</div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `;
+          break;
+          
+        case 'personal-persona':
+          const data6 = teamData[selectedPerson];
+          content = `
+            <div class="slide">
+              <div class="emoji-lg">${data6.persona.emoji}</div>
+              <div class="label">Your Q4 Persona</div>
+              <div style="font-size: 2.25rem; font-weight: 900; margin: 1rem 0; line-height: 1.2;">${data6.persona.title}</div>
+              <p style="font-size: 0.875rem; opacity: 0.7; max-width: 280px; margin-top: 1rem;">${data6.persona.description}</p>
+            </div>
+          `;
+          break;
+          
+        case 'finale':
+          const data7 = teamData[selectedPerson];
+          content = `
+            <div class="slide">
+              <div class="emoji-lg">🎊</div>
+              <div class="title">That's a Wrap!</div>
+              <div style="margin-top: 1rem;">
+                <p class="summary-line"><strong>You:</strong> ${data7.totalPoints} pts across ${data7.totalTickets} tickets</p>
+                <p class="summary-divider">—</p>
+                <p class="summary-line"><strong>Team:</strong> ${teamTotals.totalPoints} pts across ${teamTotals.totalTickets} tickets</p>
+              </div>
+              <p class="finale-cta">Here's to Q1 2026! 🚀</p>
+              <p class="finale-footer">DCA Team • IntusCare</p>
+            </div>
+          `;
+          break;
+      }
+      
+      const slides_for_dots = getCurrentSlides();
+      
+      app.innerHTML = `
+        ${showBackBtn ? `<button class="back-btn" onclick="goBack()">← Change person</button>` : ''}
+        ${content}
+        ${showNav ? `
+          <button class="nav-btn prev" onclick="prevSlide()" ${currentSlide === 0 ? 'disabled' : ''}>‹</button>
+          <button class="nav-btn next" onclick="nextSlide()" ${currentSlide === slides_for_dots.length - 1 ? 'disabled' : ''}>›</button>
+        ` : ''}
+        ${showDots ? `
+          <div class="dots">
+            ${slides_for_dots.map((_, i) => `<button class="dot ${i === currentSlide ? 'active' : ''}" onclick="goToSlide(${i})"></button>`).join('')}
+          </div>
+          <div class="slide-counter">${currentSlide + 1} / ${slides_for_dots.length}</div>
+        ` : ''}
+      `;
+    }
+
+    function selectPerson(name) {
+      selectedPerson = name;
+      phase = 'personal';
+      currentSlide = 0;
+      render();
+    }
+
+    function goBack() {
+      selectedPerson = null;
+      phase = 'team';
+      currentSlide = teamSlides.length - 1; // Go back to select screen
+      render();
+    }
+
+    function nextSlide() {
+      const slides = getCurrentSlides();
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        render();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        render();
+      }
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      render();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      const slides = getCurrentSlides();
+      const isSelectSlide = slides[currentSlide]?.id === 'select';
+      
+      if (isSelectSlide) return;
+      
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      }
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      }
+      if (e.key === 'Escape' && phase === 'personal') {
+        goBack();
+      }
+    });
+
+    // Initialize
+    render();
+  </script>
+</body>
+</html>
